@@ -12,6 +12,7 @@
 #include "structs.h"
 #include "define.h"
 int find(struct userChoiceInfo choice, char username[256]);
+bool clearPreviousData(struct outputDate currenTime);
 int main() {
     struct verifyInfo verifyInstance = isVerified();
     if (!verifyInstance.isVerified) return 0;
@@ -38,10 +39,13 @@ int main() {
     while (true) {
         struct userChoiceInfo choice = displayDateChoiceMenu();
         if (choice.roomSize != 0) {
-            printf("Your choice is: %d/%d/%d %d %d\n",  choice.userChoiceDate.year, 
+            printf("Your choice is: %d/%d/%d %d:00 %s - %d:50 %s\nRequired room capacity: %d\n",  choice.userChoiceDate.year, 
                                                         choice.userChoiceDate.month,
                                                         choice.userChoiceDate.day,
-                                                        choice.userChoiceDate.hour,
+                                                        choice.userChoiceDate.hour > 12 ? choice.userChoiceDate.hour - 12 : choice.userChoiceDate.hour,
+                                                        choice.userChoiceDate.hour >= 12 ? "pm" : "am",
+                                                        choice.userChoiceDate.hour > 12 ? choice.userChoiceDate.hour - 12 : choice.userChoiceDate.hour,
+                                                        choice.userChoiceDate.hour >= 12 ? "pm" : "am",
                                                         choice.roomSize);
             find(choice, verifyInstance.username);
         } else 
@@ -52,6 +56,10 @@ int main() {
         printf("Continue? (y/n): ");
         char c;
         scanf(" %c", &c);
-        if (c == 'n') return 0;
+        if (c == 'n') {
+            printf("Bye!\n");
+            clearPreviousData(getDate());
+            return 0;
+        }
     }
 }

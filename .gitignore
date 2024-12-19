@@ -2,3 +2,4 @@ main
 .vscode
 a.out
 *.dYSM
+bookinfo/*

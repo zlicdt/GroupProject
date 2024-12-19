@@ -12,9 +12,14 @@ struct userChoiceInfo displayDateChoiceMenu(void) {
     printf("2. %d/%d/%d (tomorrow)\n", Tomorrow.year, Tomorrow.month, Tomorrow.day);
     printf("3. %d/%d/%d (the day after tomorrow)\n", dayAfterTomorrow.year, dayAfterTomorrow.month, dayAfterTomorrow.day);
     printf("4. Exit\n");
+    dayChoiceFailureFallback:
     printf("Please enter your choice: ");
     scanf("%d", &choice);
     int availableTimeCount = 8;
+    if (!(choice >= 1 && choice <= 4)) {
+        printf("You enterd a wrong number!\n");
+        goto dayChoiceFailureFallback;
+    }
     if (choice == 1) {
         Today.hour += 1;
         availableTimeCount = 17 - Today.hour;
@@ -56,8 +61,13 @@ struct userChoiceInfo displayTimeChoiceMenu(struct userChoiceDate userChoice, st
     printf("%d. Exit\n", userChoice.availableTimeCount + 1);
     unsigned short userChoiceTime;
     int userExpectRoomSize;
+    hourChoiceFailureFallback:
     printf("Please enter your choice: ");
     scanf("%d", &userChoiceTime);
+    if (!(userChoiceTime >= 1 && userChoiceTime <= userChoice.availableTimeCount + 1)) {
+        printf("You enterd a wrong number!\n");
+        goto hourChoiceFailureFallback;
+    }
     if (userChoiceTime == userChoice.availableTimeCount + 1) {
         struct userChoiceInfo returnOfDisplayTimeChoiceMenu = {
             {0, 0, 0, 0},
